@@ -12,8 +12,10 @@ class ViewModel: ObservableObject {
     @Published var pickedImage: PickedImage?
     
     func processImage(_ image: UIImage) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        let resized = ImageHelpers.resizeImage(image: image, targetSize: CGSize(width: 512, height: 512))
+        guard let imageData = resized.jpegData(compressionQuality: 0.8) else { return }
         let base64 = imageData.base64EncodedString()
+        print("base64 = \(base64)")
         pickedImage = PickedImage(image: image, base64String: base64)
     }
 }
