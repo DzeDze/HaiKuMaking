@@ -11,7 +11,8 @@ import SwiftUI
 struct HaikuApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView(haikuGenerator: <#T##any HaikuGenerator#>)
+            ContentView(haikuGenerator: RemoteHaikuGenerator(apiKey: "", endpoint: URL(string: "https://37ca-198-84-224-217.ngrok-free.app/v1/chat/completions")!))
         }
     }
 }

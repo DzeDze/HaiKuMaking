@@ -9,8 +9,14 @@ import SwiftUI
 import PhotosUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ViewModel()
+    @StateObject private var viewModel: ViewModel
     @State private var showPicker = false
+    private var haikuGenerator: HaikuGenerator
+    
+    init(haikuGenerator: HaikuGenerator) {
+        self.haikuGenerator = haikuGenerator
+        self._viewModel = StateObject(wrappedValue: ViewModel(haikuGenerator: haikuGenerator))
+    }
     
     var body: some View {
         VStack(spacing: 20) {
@@ -21,6 +27,15 @@ struct ContentView: View {
                     .frame(height: 400)
             }
             
+            if viewModel.isLoadingHaiku {
+                ProgressView()
+                    .padding()
+            } else {
+                Text(viewModel.haiku)
+                    .frame(alignment: .center)
+                    .padding()
+            }
+            Spacer()
             Button("Pick Image") {
                 showPicker = true
             }
@@ -30,12 +45,20 @@ struct ContentView: View {
             PhotoPicker { image in
                 if let image = image {
                     viewModel.processImage(image)
+                    Task {
+                        await viewModel.getHaiku()
+                    }
                 }
+            }
+        }
+        .overlay {
+            if let errorString = viewModel.errorString {
+                Text(errorString)
             }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(haikuGenerator: RemoteHaikuGenerator(apiKey: "", endpoint: URL(string: "https://37ca-198-84-224-217.ngrok-free.app/v1/chat/completions")!))
 }
