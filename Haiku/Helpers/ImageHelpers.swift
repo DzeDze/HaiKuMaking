@@ -9,6 +9,8 @@ import UIKit
 
 struct ImageHelpers {
     
+    private init() {}
+    
     static func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
         let size = image.size
         

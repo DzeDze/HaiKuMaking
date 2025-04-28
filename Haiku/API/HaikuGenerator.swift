@@ -8,23 +8,20 @@
 import Foundation
 
 enum NetworkError: Swift.Error {
-    case badURL
+    case invalidURL
     case invalidResponse
-    case invalidResponseStatusCode(Int)
-    case invalidData
-    case failedParsingJson(String)
+    case invalidStatusCode(Int)
+    case failedParsingJSON(String)
     
     var description: String {
         switch self {
-        case .badURL:
+        case .invalidURL:
             return "Invalid URL"
         case .invalidResponse:
             return "Invalid Response"
-        case .invalidResponseStatusCode(let responseCode):
+        case .invalidStatusCode(let responseCode):
             return "Invalid response status code: \(responseCode)"
-        case .invalidData:
-            return "Invalid Data"
-        case .failedParsingJson(let description):
+        case .failedParsingJSON(let description):
             return "Unable to decode Json data: \(description)"
         }
     }

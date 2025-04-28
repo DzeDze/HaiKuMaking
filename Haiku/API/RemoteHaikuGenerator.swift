@@ -9,17 +9,13 @@ import Foundation
 
 class RemoteHaikuGenerator: HaikuGenerator {
     
-    
-    
-    private var apiKey: String
-    private var endpoint: URL
+    private var urlString: String
     private var model: String
     
-    init(apiKey: String,
-         endpoint: URL = URL(string: "https://api.openai.com/v1/engines/text-davinci-003/completions")!,
+    init(urlString: String,
          model: String = "qvq-step-tiny") {
-        self.apiKey = apiKey
-        self.endpoint = endpoint
+        
+        self.urlString = urlString
         self.model = model
     }
     
@@ -48,7 +44,10 @@ class RemoteHaikuGenerator: HaikuGenerator {
     }
     
     func generateHaiku(base64ImageData: String) async throws -> String {
-        var request = URLRequest(url: endpoint)
+        
+        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
+        
+        var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -61,14 +60,14 @@ class RemoteHaikuGenerator: HaikuGenerator {
         }
         
         guard httpResponse.statusCode == 200 else {
-            throw NetworkError.invalidResponseStatusCode(httpResponse.statusCode)
+            throw NetworkError.invalidStatusCode(httpResponse.statusCode)
         }
         
         do {
             let haiku = try JSONDecoder().decode(Haiku.self, from: data)
             return haiku.content ?? ""
         } catch {
-            throw NetworkError.failedParsingJson(error.localizedDescription)
+            throw NetworkError.failedParsingJSON(error.localizedDescription)
         }
     }
 }
