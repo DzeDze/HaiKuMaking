@@ -1,4 +1,4 @@
-This project was built for the tutorial [[Fun with LLMs: Building a Haiku Maker App with a Vision Model](This project was built for the tutorial [Fun with LLMs: Building a Haiku Maker App with a Vision Model])]
+This project was built for the tutorial [Fun with LLMs: Building a Haiku Maker App with a Vision Model](https://medium.com/@phuc.nguyen.ufo/fun-with-llms-building-a-haiku-maker-app-with-a-vision-model-part-1-2720737c4f38)
 
 ![Demo](https://raw.githubusercontent.com/DzeDze/HaiKuMaking/refs/heads/main/demo.gif?raw=true)
 
